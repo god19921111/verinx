@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #F0F0FA;
+  --color-ink-soft: rgba(240, 240, 250, 0.9);
+  --color-bg: #000000;
+  --color-muted: #808080;
+  --color-line: rgba(240, 240, 250, 0.35);
+  --color-primary: #F0F0FA;
+  --color-primary-foreground: #000000;
+  --color-secondary: #0a0a0a;
+  --color-secondary-foreground: #F0F0FA;
+  --color-accent: rgba(240, 240, 250, 0.15);
+  --color-accent-foreground: #F0F0FA;
+  --color-destructive: rgba(239, 68, 68, 0.9);
+  --color-destructive-foreground: #F0F0FA;
+  --color-success: rgba(34, 197, 94, 0.9);
+  --color-warning: rgba(245, 158, 11, 0.9);
+  --color-card: rgba(10, 10, 10, 0.8);
+  --color-card-foreground: #F0F0FA;
+  --color-border: rgba(240, 240, 250, 0.35);
+  --color-input: rgba(240, 240, 250, 0.1);
+  --color-ring: #F0F0FA;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --radius: 4px;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: rgba(240, 240, 250, 0.35);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #000000;
+    color: #F0F0FA;
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: #F0F0FA;
+    color: #000000;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .font-display {
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .font-body {
+    font-family: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  .font-mono-spacex {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    letter-spacing: 0.03em;
+  }
+  .uppercase-spacex {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .transition-spacex {
+    transition: all 400ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .border-spacex {
+    border: 1px solid rgba(240, 240, 250, 0.35);
+  }
+  .bg-card-spacex {
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid rgba(240, 240, 250, 0.35);
+  }
+  .hover-bg-spacex:hover {
+    background: rgba(240, 240, 250, 0.08);
+  }
+}
