@@ -1,0 +1,15 @@
+# ============================================================
+# VerinX · Cloudflare Pages 部署配置
+# 文档：https://developers.cloudflare.com/pages/
+# ============================================================
+
+# 构建配置
+[build]
+  command = "npm run build"
+  output_directory = "dist"
+
+# 环境变量（在 Cloudflare Dashboard → 项目 → Settings → Environment variables 配置）
+# VITE_API_BASE_URL = https://<你的space名>-api.hf.space/api
+
+# SPA 路由：所有非静态资源路径回退到 index.html（支持 React Router）
+# Cloudflare Pages 通过 _redirects 文件实现，见 public/_redirects
