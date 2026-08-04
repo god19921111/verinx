@@ -1,0 +1,49 @@
+﻿检查仓库...
+python : urllib3.exceptions.SSLError: EOF occurred in violation of protocol (_ssl.c:1007)
+At line:15 char:7497
++ ... e_modules\@vscode\ripgrep\bin'; python push_to_github.py 2>&1 | Out-F ...
++                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (urllib3.excepti...l (_ssl.c:1007):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\vm\tools\python\lib\site-packages\requests\adapters.py", line 645, in send
+    resp = conn.urlopen(
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\vm\tools\python\lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\vm\tools\python\lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.github.com', port=443): Max retries exceeded with url: 
+/repos/god19921111/verinx-deploy (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol 
+(_ssl.c:1007)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\work-mode-projects\6a67217cb5e18414aeed31ef\push_to_github.py", line 171, in <module>
+    ok = main()
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\work-mode-projects\6a67217cb5e18414aeed31ef\push_to_github.py", line 122, in main
+    r = session.get(f"{API}/repos/{REPO}")
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\vm\tools\python\lib\site-packages\requests\sessions.py", line 605, in get
+    return self.request("GET", url, **kwargs)
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\vm\tools\python\lib\site-packages\requests\sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\vm\tools\python\lib\site-packages\requests\sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\30709\AppData\Roaming\TRAE SOLO 
+CN\ModularData\ai-agent\vm\tools\python\lib\site-packages\requests\adapters.py", line 676, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.github.com', port=443): Max retries exceeded with url: 
+/repos/god19921111/verinx-deploy (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol 
+(_ssl.c:1007)')))
