@@ -1,0 +1,46 @@
+# Render Blueprint - VerinX 一键部署配置
+# 文档: https://render.com/docs/blueprint-spec
+# 使用方法：在 Render Dashboard 连接 GitHub 仓库后会自动识别此文件
+
+services:
+  - type: web
+    name: verinx
+    runtime: docker
+    plan: free  # 免费版：512MB RAM，15分钟无访问休眠
+    dockerfilePath: ./Dockerfile.render
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        value: sqlite:////data/verinx.db
+      - key: UPLOAD_DIR
+        value: /data/uploads
+      - key: JWT_SECRET_KEY
+        generateValue: true  # Render 自动生成随机密钥
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_EXPIRE_MINUTES
+        value: "120"
+      - key: FREE_DAILY_PRACTICE_LIMIT
+        value: "3"
+      - key: FREE_FOLLOW_UP_LIMIT
+        value: "1"
+      - key: PREMIUM_FOLLOW_UP_LIMIT
+        value: "3"
+      - key: FREE_USER_FILE_RETENTION_DAYS
+        value: "7"
+      - key: PREMIUM_USER_FILE_RETENTION_DAYS
+        value: "30"
+      - key: QUESTION_BANK_AUTO_SYNC
+        value: "True"
+      - key: ZHIPU_API_KEY
+        sync: false  # 敏感值，需在 Dashboard 手动填入
+      - key: DOUBAO_API_KEY
+        sync: false  # 敏感值，需在 Dashboard 手动填入
+    disk:
+      name: verinx-data
+      mountPath: /data
+      sizeGB: 1  # 免费版最大 1GB 持久磁盘
