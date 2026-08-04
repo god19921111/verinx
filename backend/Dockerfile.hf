@@ -1,0 +1,88 @@
+# ============================================================
+# VerinX · Hugging Face Spaces 部署 Dockerfile (Docker SDK)
+# 平台：Hugging Face Spaces (Docker SDK, 免费)
+# 配置：2 vCPU + 16GB RAM + 50GB 临时存储
+# 端口：7860 (HF Spaces 强制要求)
+# 说明：前后端整合部署，SQLite 数据库，无需外部服务
+# ============================================================
+
+# ---- 阶段1: 构建前端 ----
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /build
+
+# 先复制依赖文件，利用 Docker 层缓存
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm install --legacy-peer-deps
+
+# 复制前端源码并构建
+COPY frontend/ .
+# 构建时使用相对路径 /api，适配同端口部署
+ENV VITE_API_BASE_URL=/api
+RUN npm run build
+
+# ---- 阶段2: 后端 + 前端静态文件 ----
+FROM python:3.11-slim
+
+# 系统依赖（ffmpeg 用于音视频处理）
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    libsndfile1 \
+    libgomp1 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# 安装 Python 依赖（精简版，不含 funasr/torch 等重型依赖）
+COPY backend/requirements-deploy.txt .
+RUN pip install --no-cache-dir -r requirements-deploy.txt
+
+# 复制后端代码
+COPY backend/ .
+
+# 复制前端构建产物到 /frontend/dist
+# (main.py 中 FRONTEND_DIST 路径: parent.parent.parent / "frontend" / "dist")
+# 后端代码在 /app/app/, 所以 parent.parent.parent = /, 即 /frontend/dist
+COPY --from=frontend-builder /build/dist /frontend/dist
+
+# 创建数据目录（HF Spaces 持久存储挂载在 /data，免费版为临时存储）
+RUN mkdir -p /data/uploads
+# 复制真题数据库到工作目录（首次启动时加载）
+RUN if [ -f /app/app/services/real_questions.json ]; then \
+      cp /app/app/services/real_questions.json /app/app/services/real_questions.json.bak; \
+    fi
+
+# ---------- 环境变量配置 ----------
+# HF Spaces 强制端口 7860
+ENV PORT=7860
+EXPOSE 7860
+
+# 应用配置
+ENV DEBUG=False
+ENV DATABASE_URL=sqlite:////data/verinx.db
+ENV UPLOAD_DIR=/data/uploads
+ENV JWT_SECRET_KEY=verinx-hf-spaces-secret-change-me
+ENV JWT_ALGORITHM=HS256
+ENV JWT_EXPIRE_MINUTES=120
+
+# 会员权限
+ENV FREE_DAILY_PRACTICE_LIMIT=3
+ENV FREE_FOLLOW_UP_LIMIT=1
+ENV PREMIUM_FOLLOW_UP_LIMIT=3
+
+# 文件保留策略
+ENV FREE_USER_FILE_RETENTION_DAYS=7
+ENV PREMIUM_USER_FILE_RETENTION_DAYS=30
+
+# 题库自动同步
+ENV QUESTION_BANK_AUTO_SYNC=True
+ENV QUESTION_BANK_SYNC_INTERVAL_HOURS=24
+
+# 健康检查（HF Spaces 会探测 7860 端口）
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:7860/api/health || exit 1
+
+# 启动命令：直接运行 FastAPI (无需 Gradio 包装)
+# HF Spaces Docker SDK 会自动探测 7860 端口
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "1"]
