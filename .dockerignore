@@ -1,0 +1,98 @@
+# ============================================================
+# VerinX · Hugging Face Spaces 部署过滤规则
+# 排除不必要文件，减小构建上下文，加速构建
+# ============================================================
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 虚拟环境（体积大，容器内重新安装）
+backend/.pylibs/
+backend/vendor/
+backend/venv/
+backend/.venv/
+venv/
+.venv/
+env/
+.env
+!backend/.env.example
+!backend/.env.production
+
+# ---------- Node.js ----------
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 前端构建产物（容器内重新构建）
+frontend/dist/
+
+# ---------- 版本控制 ----------
+.git/
+.gitignore
+.gitattributes
+.github/
+.gitlab-ci.yml
+
+# ---------- IDE ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------- 操作系统 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- 数据库文件 ----------
+*.db
+*.sqlite
+*.sqlite3
+backend/gongkaoxing.db
+backend/data/
+
+# ---------- 日志 ----------
+*.log
+logs/
+backend/funasr_*.log
+
+# ---------- 上传文件 ----------
+backend/uploads/
+uploads/
+
+# ---------- 文档（非部署必需） ----------
+*.md
+!README_HF.md
+docs/
+
+# ---------- 其他 Docker 配置（避免冲突） ----------
+Dockerfile
+Dockerfile.zeabur
+Dockerfile.*
+!Dockerfile.hf
+docker-compose*.yml
+
+# ---------- 临时文件 ----------
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# ---------- HF 特定（避免递归） ----------
+# 如果从 HF Space 仓库构建，排除已有的构建产物
+.cache/
