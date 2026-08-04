@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+backend/.pylibs/
+backend/vendor/
+backend/venv/
+*.db
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Build
+frontend/dist/
+
+# Logs
+*.log
+push_log*.txt
+
+# IDE
+.vscode/
+.idea/
+
+# Env
+backend/.env
+!backend/.env.example
+!backend/.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+backend/uploads/
+uploads/
+
+# HF Deploy
+.hf-config
+.hf-deploy/
+
+# Cache
+.cache/
+backend/app/services/.last_sync
+backend/app/services/real_questions.json.bak
+
+# Vosk 模型（65MB，部署时按需下载）
+backend/models/
+
+# 临时部署脚本（保留 Dockerfile.render 和 render.yaml 即可）
+deploy-all.bat
+deploy-frontend.bat
+deploy-to-d.bat
+start-backend.bat
+stop-all.bat
+push_to_github.py
+
+# 隧道工具二进制（部署不需要）
+cloudflared.exe
+ngrok/
+
